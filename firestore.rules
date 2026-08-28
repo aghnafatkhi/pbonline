@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Rooms: Public anonymous or identified photobooth sessions
+    match /rooms/{roomCode} {
+      allow read: if true;
+      allow create: if request.resource.data.status in ['lobby', 'waiting']
+                    && request.resource.data.hostUid != null
+                    && request.resource.data.layout != null;
+      allow update: if true;
+      allow delete: if false;
+    }
+    
+    // Overlays: Frame designs
+    match /overlays/{overlayId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    
+    // Users: Profiles and Presence
+    match /users/{userId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if false;
+    }
+
+    // Invites: Realtime invitations
+    match /invites/{inviteId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if true;
+    }
+    
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

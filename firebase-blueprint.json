@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "Room": {
+      "title": "Room",
+      "description": "A photobooth session room supporting multi-device synchronization",
+      "type": "object",
+      "properties": {
+        "createdAt": { "type": "timestamp" },
+        "status": { "type": "string", "enum": ["lobby", "countdown", "capturing", "completed"] },
+        "layout": { "type": "string" },
+        "selectedFrameId": { "type": "string" },
+        "overlayBackground": { "type": "string" },
+        "hostUid": { "type": "string" },
+        "participantOrder": { "type": "array" },
+        "participants": { "type": "object" },
+        "currentRound": { "type": "number" },
+        "totalPoses": { "type": "number" },
+        "targetCaptureTime": { "type": "number", "nullable": true },
+        "captures": { "type": "object" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["status", "layout", "hostUid", "createdAt"]
+    },
+    "Participant": {
+      "title": "Participant",
+      "description": "A user in the room",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "connected": { "type": "boolean" },
+        "ready": { "type": "boolean" },
+        "photoUrl": { "type": "string", "nullable": true },
+        "photoReady": { "type": "boolean" }
+      }
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile with friend code and presence status",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "friendCode": { "type": "string" },
+        "avatar": { "type": "string" },
+        "status": { "type": "string" },
+        "lastSeen": { "type": "number" },
+        "friends": { "type": "array" }
+      }
+    },
+    "Invite": {
+      "title": "Invite",
+      "description": "Direct photobooth invitation between friends",
+      "type": "object",
+      "properties": {
+        "fromUid": { "type": "string" },
+        "fromName": { "type": "string" },
+        "toUid": { "type": "string" },
+        "roomCode": { "type": "string" },
+        "layout": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "timestamp" }
+      }
+    }
+  },
+  "firestore": {
+    "rooms/{roomCode}": {
+      "schema": "#/entities/Room",
+      "description": "Photobooth rooms"
+    },
+    "users/{userId}": {
+      "schema": "#/entities/User",
+      "description": "User profiles and friends"
+    },
+    "invites/{inviteId}": {
+      "schema": "#/entities/Invite",
+      "description": "Real-time photobooth invitations"
+    }
+  }
+}

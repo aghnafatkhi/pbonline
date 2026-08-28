@@ -1,0 +1,6 @@
+{
+  "name": "Photobooth Online",
+  "description": "Platform photobooth online modern untuk membuat photo strip 2, 3, atau 4 frame langsung dari browser.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
